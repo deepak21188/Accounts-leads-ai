@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>dotnet-AccountingLeads.Worker-946e0222-f16c-432c-a8cd-131214fdb65f</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.11" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AccountingLeads.Application\AccountingLeads.Application.csproj" />
+    <ProjectReference Include="..\AccountingLeads.Infrastructure\AccountingLeads.Infrastructure.csproj" />
+  </ItemGroup>
+</Project>

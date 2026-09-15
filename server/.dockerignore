@@ -1,0 +1,18 @@
+# Mirrors the .NET section of the repo-root .gitignore, but with recursive globs (**/) since
+# .dockerignore patterns, unlike .gitignore's, only match at the context root by default.
+**/bin/
+**/obj/
+**/out/
+**/*.user
+**/*.suo
+
+# Any local/uncommitted appsettings override (e.g. appsettings.Local.json) should never end up
+# baked into the image — only the two committed files (appsettings.json,
+# appsettings.Development.json) are meant to ship, and Development's isn't even used at
+# runtime here since the image sets DOTNET_ENVIRONMENT=Production.
+**/appsettings.*.json
+!**/appsettings.json
+!**/appsettings.Development.json
+
+.git/
+.vs/

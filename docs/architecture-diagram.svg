@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1160" viewBox="0 0 1440 1160" role="img" aria-labelledby="title desc">
+<title id="title">Accounting Leads AI — Azure Architecture</title>
+<desc id="desc">React calls the API, which saves a lead and outbox event atomically in Azure SQL. One Container Apps Worker publishes outbox events to Service Bus and consumes them for Azure OpenAI analysis. Results return to SQL before the message is completed. Failures are retried or dead-lettered.</desc>
+<defs>
+ <linearGradient id="bg" x2="1" y2="1"><stop stop-color="#0b1224"/><stop offset="1" stop-color="#17233d"/></linearGradient>
+ <marker id="arrow" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8" fill="none" stroke="#91a7c5" stroke-width="1.5"/></marker>
+ <style>text{font-family:Segoe UI,Arial,sans-serif;fill:#e8eef9} .title{font-size:36px;font-weight:700}.sub{font-size:17px;fill:#acbdd4}.label{font-size:13px;font-weight:700;letter-spacing:1.5px}.name{font-size:23px;font-weight:600}.body{font-size:17px}.small{font-size:15px;fill:#b9c9dd}.line{fill:none;stroke:#91a7c5;stroke-width:2;marker-end:url(#arrow)}.edge{font-size:14px;fill:#cfdbeb}</style>
+</defs>
+<rect width="1440" height="1160" rx="24" fill="url(#bg)"/>
+<text x="60" y="65" class="label" style="fill:#7dd3fc">ACCOUNTING LEADS AI</text>
+<text x="60" y="116" class="title">From client inquiry to structured insight</text>
+<text x="60" y="151" class="sub">Modular monolith · Separate API and Worker hosts · Reliable asynchronous processing</text>
+
+<rect x="60" y="200" width="360" height="155" rx="16" fill="#132b4a" stroke="#3b82f6"/>
+<text x="84" y="230" class="label" style="fill:#93c5fd">01 / AZURE STATIC WEB APPS</text>
+<text x="84" y="271" class="name">React frontend</text>
+<text x="84" y="304" class="body">Public lead capture form</text>
+<text x="84" y="333" class="small">TypeScript · Tailwind CSS · shadcn/ui</text>
+
+<rect x="540" y="200" width="360" height="155" rx="16" fill="#252449" stroke="#818cf8"/>
+<text x="564" y="230" class="label" style="fill:#c4b5fd">02 / AZURE APP SERVICE</text>
+<text x="564" y="271" class="name">ASP.NET Core API</text>
+<text x="564" y="304" class="body">CreateLead · Domain validation</text>
+<text x="564" y="333" class="small">HTTP boundary + application use case</text>
+
+<rect x="1020" y="200" width="360" height="155" rx="16" fill="#113c3a" stroke="#2dd4bf"/>
+<text x="1044" y="230" class="label" style="fill:#5eead4">03 / AZURE SQL</text>
+<text x="1044" y="271" class="name">Application database</text>
+<text x="1044" y="304" class="body">Leads · OutboxMessages</text>
+<text x="1044" y="333" class="small">LeadAnalyses · Processing status</text>
+<path class="line" d="M420 278H540"/><text x="449" y="256" class="edge">HTTPS</text>
+<path class="line" d="M900 278H1020"/><text x="922" y="248" class="edge">Atomic</text><text x="930" y="267" class="edge">save</text>
+
+<rect x="60" y="425" width="840" height="450" rx="20" fill="#1d2638" stroke="#e9ab49" stroke-width="2"/>
+<text x="84" y="460" class="label" style="fill:#fcd58a">AZURE CONTAINER APPS / ACCOUNTINGLEADS.WORKER</text>
+<text x="84" y="490" class="small">One continuously running instance · Publisher and consumer share this host</text>
+
+<rect x="90" y="525" width="325" height="120" rx="12" fill="#463322" stroke="#b98a46"/>
+<text x="112" y="558" class="label" style="fill:#fcd58a">04 / OUTBOX PUBLISHER</text>
+<text x="112" y="591" class="body">Poll pending SQL events</text>
+<text x="112" y="620" class="small">Send → Mark published after success</text>
+
+<rect x="545" y="525" width="325" height="120" rx="12" fill="#463322" stroke="#b98a46"/>
+<text x="567" y="558" class="label" style="fill:#fcd58a">06 / MESSAGE CONSUMER</text>
+<text x="567" y="591" class="body">Validate event type and version</text>
+<text x="567" y="620" class="small">Fresh scope for each message</text>
+
+<rect x="545" y="715" width="325" height="125" rx="12" fill="#302447" stroke="#b18ae3"/>
+<text x="567" y="748" class="label" style="fill:#d8b4fe">07 / PROCESSLEAD</text>
+<text x="567" y="780" class="body">Load lead · Skip if completed</text>
+<text x="567" y="809" class="small">Validate analysis · Save result + status</text>
+<path class="line" d="M707 645V715"/>
+<text x="725" y="686" class="edge">Invoke use case</text>
+
+<rect x="1020" y="525" width="360" height="120" rx="16" fill="#432e22" stroke="#fb923c"/>
+<text x="1044" y="558" class="label" style="fill:#fdba74">05 / AZURE SERVICE BUS</text>
+<text x="1044" y="592" class="name">lead-created</text>
+<text x="1044" y="621" class="small">At-least-once message delivery</text>
+<path class="line" d="M1200 355V395H252V525"/><text x="540" y="387" class="edge">Read pending outbox rows from SQL</text>
+<path class="line" d="M415 570H470V508H980V552H1020"/><text x="898" y="493" class="edge">Publish</text>
+<path class="line" d="M1020 605H870"/><text x="919" y="591" class="edge">Deliver</text>
+
+<rect x="1020" y="715" width="360" height="125" rx="16" fill="#352347" stroke="#c084fc"/>
+<text x="1044" y="748" class="label" style="fill:#d8b4fe">08 / AZURE OPENAI</text>
+<text x="1044" y="782" class="name">Structured extraction</text>
+<text x="1044" y="811" class="small">Services · Revenue · Urgency · Notes</text>
+<path class="line" d="M870 758H1020"/><text x="905" y="747" class="edge">Inquiry</text>
+<path class="line" d="M1020 806H870"/><text x="914" y="827" class="edge">Result</text>
+
+<text x="90" y="727" class="label" style="fill:#fcd58a">SUCCESS SEQUENCE</text>
+<text x="90" y="759" class="body">1. Save analysis + Completed in SQL</text>
+<text x="90" y="790" class="body">2. Complete Service Bus message</text>
+<text x="90" y="823" class="small">Duplicate completed leads skip AI.</text>
+
+<rect x="60" y="915" width="840" height="90" rx="14" fill="#142c39" stroke="#376475"/>
+<text x="84" y="946" class="label" style="fill:#7dd3fc">MICROSOFT ENTRA ID / MANAGED IDENTITY</text>
+<text x="84" y="978" class="body">Worker: SQL access · Queue Sender + Receiver · OpenAI access</text>
+<rect x="1020" y="915" width="360" height="90" rx="14" fill="#412332" stroke="#fb7185"/>
+<text x="1044" y="946" class="label" style="fill:#fda4af">DEAD-LETTER QUEUE</text>
+<text x="1044" y="978" class="body">Delivery limit reached / expired</text>
+<path class="line" d="M1380 585H1403V960H1380"/>
+<path d="M60 1040H1380" stroke="#33435b"/>
+<text x="60" y="1077" class="body">Reliable event identity</text>
+<text x="340" y="1077" class="body" style="fill:#5eead4">OutboxMessage.Id = EventId = ServiceBus MessageId</text>
+<text x="60" y="1115" class="small">Send failure → outbox retry with backoff. Processing failure → redelivery. Lead capture does not wait for AI.</text>
+</svg>
